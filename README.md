@@ -49,8 +49,6 @@ flowchart TD
     I --> J
     
     J --> End([Trả về phản hồi cho User])
-    
-    style E fill:#f9f,stroke:#333,stroke-width:2px
-    style F fill:#bbf,stroke:#333,stroke-width:2px
+
   
 ```
