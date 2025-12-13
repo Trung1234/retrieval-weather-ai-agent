@@ -1,7 +1,7 @@
 ## 🏗️ Kiến trúc hệ thống (Architecture Flow)
 
 Dưới đây là luồng xử lý request khi người dùng hỏi về thời tiết:
-
+### Sequence Diagram
 ```mermaid
 sequenceDiagram
     autonumber
@@ -28,4 +28,29 @@ sequenceDiagram
     Gemini-->>SpringAI: Sinh câu trả lời tự nhiên (Final Response)
     SpringAI-->>Controller: Return String
     Controller-->>User: Response Body
+```
+### Flowchart
+```mermaid
+flowchart TD
+    Start([User gửi câu hỏi]) --> A[AgentController nhận Request]
+    A --> B[Spring AI gửi Prompt tới Gemini]
+    
+    B --> C{Gemini phân tích:<br/>Cần dùng Tool không?}
+    
+    C -- Không --> D[Gemini tự trả lời dựa trên kiến thức có sẵn]
+    
+    C -- Có (Hỏi thời tiết) --> E[Spring AI kích hoạt WeatherService]
+    E --> F[Gọi OpenWeatherMap API]
+    F --> G[Nhận dữ liệu JSON thời tiết]
+    G --> H[Gửi dữ liệu về lại Gemini]
+    
+    H --> I[Gemini tổng hợp thông tin + Câu hỏi gốc]
+    D --> J[Tạo câu trả lời tự nhiên]
+    I --> J
+    
+    J --> End([Trả về phản hồi cho User])
+    
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+  
 ```
