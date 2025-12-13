@@ -13,7 +13,7 @@ public class AgentController {
     private final ChatClient chatClient;
 
     public AgentController(ChatClient.Builder builder) {
-        // 1. Chỉ cấu hình System Prompt mặc định ở đây
+        // 1.  cấu hình System Prompt
         this.chatClient = builder
                 .defaultSystem("Bạn là một trợ lý thời tiết hữu ích. Nếu người dùng hỏi về thời tiết, hãy sử dụng công cụ currentWeatherFunction.")
                 .build();
@@ -24,7 +24,7 @@ public class AgentController {
 
         // 1. Tạo Options
         var options = GoogleGenAiChatOptions.builder()
-                .toolName("currentWeatherFunction") // Nếu vẫn đỏ, hãy thử .tools("currentWeatherFunction")
+                .toolName("currentWeatherFunction")
                 .build();
 
         // 2. Tạo Prompt thủ công
