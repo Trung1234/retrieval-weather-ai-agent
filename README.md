@@ -60,7 +60,7 @@ flowchart TD
 - [x] **IDE:** IntelliJ IDEA (Recommended) / VS Code / Eclipse
 
 ### 🗝️ API Keys Required
-Để chạy được Agent, bạn cần chuẩn bị 2 keys sau:
+Để chạy được Agent, bạn cần chuẩn bị 2 keys sau (sau đó thay vào file application.properties):
 
 | Service | Mô tả | Đăng ký tại |
 | :--- | :--- | :--- |
