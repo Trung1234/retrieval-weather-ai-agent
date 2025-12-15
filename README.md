@@ -52,6 +52,69 @@ flowchart TD
 
   
 ```
+### Class Diagram
+```mermaid
+classDiagram
+    direction LR
+
+    %% 1. Components (Các Bean chính)
+    class AgentController {
+        +ChatClient chatClient
+        +String chat(String message)
+    }
+
+    class WeatherService {
+        +Function~WeatherRequest, WeatherResponse~ currentWeatherFunction()
+        +WeatherResponse apply(WeatherRequest req)
+    }
+
+    class ChatClient {
+        <<Interface>>
+        +String call(...)
+    }
+
+    %% 2. Data Transfer Objects (DTOs/Records)
+    class WeatherRequest {
+        <<Record>>
+        +String location
+        +String unit
+    }
+
+    class WeatherResponse {
+        <<Record>>
+        +double temp
+        +int humidity
+        +String description
+    }
+    
+    class OpenWeatherMapResponse {
+        <<Record>>
+        -Main main
+        -Weather[] weather
+    }
+
+    class Main {
+        <<Record>>
+        +double temp
+        +int humidity
+    }
+    
+    class Weather {
+        <<Record>>
+        +String description
+    }
+
+    %% 3. Relationships (Mối quan hệ)
+    AgentController --> ChatClient : sử dụng
+    ChatClient ..> WeatherService : gọi (Tool Use)
+    WeatherService ..> WeatherRequest : input
+    WeatherService ..> WeatherResponse : output
+    WeatherService --> OpenWeatherMapResponse : ánh xạ từ API ngoài
+    OpenWeatherMapResponse *-- Main : chứa 1
+    OpenWeatherMapResponse *-- Weather : chứa 1..*
+
+  
+```
 ## 🚀 2. Yêu cầu hệ thống (Prerequisites)
 
 ### 💻 Môi trường (Development Environment)
