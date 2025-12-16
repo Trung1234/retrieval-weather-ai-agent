@@ -122,6 +122,26 @@ classDiagram
 - [x] **Build Tool:** Maven / Gradle
 - [x] **IDE:** IntelliJ IDEA (Recommended) / VS Code / Eclipse
 
+## 📝 Giải Thích Thuật Ngữ Java Hiện Đại
+
+Dự án này sử dụng các tính năng mới từ Java 17+ (LTS) và Spring Boot 3.x. Dưới đây là giải thích các khái niệm mà có thể bạn chưa quen thuộc:
+
+### 1. Record (Java DTO Kiểu Mới)
+* **Vấn đề cũ (Java 7):** Để tạo một đối tượng truyền dữ liệu (DTO) sạch sẽ, bạn phải viết thủ công Class, Private Fields, Constructor, Getters, `equals()`, `hashCode()`, và `toString()`. Rất nhiều code thừa (Boilerplate).
+* **Giải pháp (Record):** Record là một `class` rút gọn. Khi bạn khai báo `public record WeatherRequest(String location, String unit) {}`, Java Compiler sẽ **tự động sinh ra** tất cả các hàm cần thiết cho bạn.
+* **Mục đích:** Giúp code sạch, gọn gàng và đảm bảo dữ liệu luôn bất biến (immutable).
+
+### 2. Function<T, R> (Functional Interface)
+* `Function<T, R>` là một Interface chuẩn của Java 8+. Nó định nghĩa một "hàm" nhận vào một đối số kiểu `T` và trả về một kết quả kiểu `R`.
+* Trong dự án, `WeatherService implements Function<WeatherRequest, WeatherResponse>` có nghĩa là: **"WeatherService là một hàm nhận input là `WeatherRequest` và trả về output là `WeatherResponse`."**
+
+### 3. Annotation @Bean và Tool Calling (Cốt lõi của AI Agent)
+* Trong các dự án AI Agent hiện đại, chúng ta không gọi code Java trực tiếp. **AI Agent quyết định khi nào gọi.**
+* Khi bạn dùng `@Bean` trên một `Function<T, R>`, bạn đang báo với Spring AI rằng:
+    * **"Đây là một công cụ (Tool) có sẵn."**
+    * **"Gemini có thể gọi công cụ này bằng tên phương thức."**
+* **Ví dụ:** Tên Bean `currentWeatherFunction` chính là tên mà AI Agent dùng để ra lệnh cho hệ thống của bạn. Backend (Code Java) chỉ là "tay chân" làm theo lệnh của AI.
+
 ### 🗝️ API Keys Required
 Để chạy được Agent, bạn cần chuẩn bị 2 keys sau (sau đó thay vào file application.properties):
 
