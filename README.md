@@ -115,6 +115,30 @@ classDiagram
 
   
 ```
+
+### AIConfig Flow
+```mermaid
+flowchart TD
+    subgraph SpringContext [Spring Application Context]
+        Service[WeatherService Logic]
+        Config[AIConfig]
+    end
+
+    subgraph SpringAI_Magic [Spring AI Auto-Configuration]
+        Scanner[Function Scanner]
+        Converter[JSON Schema Converter]
+    end
+
+    Config -- Đăng ký @Bean --> Scanner
+    Scanner -- Đọc Input Type (WeatherRequest) --> Converter
+    
+    Converter -- Tạo Schema --> SchemaDef(JSON: <br/> name: currentWeatherFunction <br/> des: Lấy thời tiết... <br/> args: location, unit)
+    
+    SchemaDef --> Gemini[Gửi lên Google Gemini]
+
+  
+```
+
 ## 🚀 2. Yêu cầu hệ thống (Prerequisites)
 
 ### 💻 Môi trường (Development Environment)
