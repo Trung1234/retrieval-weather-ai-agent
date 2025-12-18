@@ -117,6 +117,36 @@ classDiagram
 ```
 
 ### AIConfig Flow
+A. @Configuration
+Ý nghĩa: Báo cho Spring Boot biết class này chứa các bản thiết kế (blueprints) để tạo ra các Bean.
+
+Vai trò: Nơi tập trung cấu hình, giúp code gọn gàng thay vì rải rác khắp nơi.
+
+B. @Bean (Cốt lõi vấn đề)
+Trong Spring thường: Nó chỉ đơn giản là đưa đối tượng vào thùng chứa (ApplicationContext) để tái sử dụng.
+
+Trong Spring AI: Đây là công tắc kích hoạt. Spring AI có một cơ chế tự động quét (scan). Bất cứ khi nào nó thấy một @Bean trả về kiểu Function<T, R>, nó sẽ tự hiểu:
+
+"À, đây không phải bean thường. Đây là một Tool mà mình cần giới thiệu cho AI (Gemini/ChatGPT) biết."
+
+C. Tên phương thức currentWeatherFunction
+Ý nghĩa: Đây chính là Tên công cụ (Tool Name) mà Gemini nhìn thấy.
+
+Lưu ý: Nếu bạn đổi tên hàm này thành abcXYZ(), thì trong file JSON gửi lên Google, tên tool cũng sẽ đổi thành abcXYZ.
+
+Lời khuyên: Hãy đặt tên rõ ràng, dùng động từ (ví dụ: getWeather, searchProduct) để AI dễ hiểu mục đích.
+
+D. @Description (Rất quan trọng)
+Ý nghĩa: Đây là Bảng hướng dẫn sử dụng cho AI.
+
+Cơ chế: Dòng chữ "Lấy thông tin thời tiết..." sẽ được gửi kèm prompt lên Gemini.
+
+Tại sao cần? Nếu không có mô tả này, AI chỉ thấy tên hàm currentWeatherFunction và phải đoán mò. Có mô tả, AI sẽ biết chính xác khi nào nên dùng tool này.
+
+E. Function<WeatherRequest, WeatherResponse>
+Ý nghĩa: Định nghĩa "Cổng vào" (Input) và "Cổng ra" (Output).
+
+Magic của Spring AI: Dựa vào generic type <WeatherRequest>, Spring AI sẽ dùng Reflection để đọc Record WeatherRequest, xem nó có trường location, unit... và tự động vẽ ra file JSON Schema để gửi cho Gemini. Bạn không cần viết một dòng JSON nào cả!
 ```mermaid
 flowchart TD
     subgraph SpringContext [Spring Application Context]
